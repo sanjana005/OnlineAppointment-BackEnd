@@ -22,9 +22,21 @@ namespace OnlineAppointment.Controllers
         public Response ConsultantRegistration(ConsultantRegistration consultantRegistration)
         {
             Response response = new Response();
-            SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("SNCon").ToString());
+            SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("DBCon").ToString());
             Dal dal = new Dal();
             response = dal.ConsultantRegistration(consultantRegistration, connection);
+            return response;
+        }
+
+        [HttpPost]
+        [Route("ConsultantLogin")]
+
+        public Response ConsultantLogin(Login login)
+        {
+            Response response = new Response();
+            SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("DBCon").ToString());
+            Dal dal = new Dal();
+            response = dal.Login(login, connection);
             return response;
         }
     }

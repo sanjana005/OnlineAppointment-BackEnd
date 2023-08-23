@@ -1,4 +1,5 @@
-﻿using System.Data.SqlClient;
+﻿using System.Data;
+using System.Data.SqlClient;
 
 namespace OnlineAppointment.Model
 {
@@ -72,6 +73,61 @@ namespace OnlineAppointment.Model
                 response.StatusMessage = "Registration Failed!";
             }
 
+            return response;
+        }
+
+        public Response Login(Login login, SqlConnection connection)
+        {
+            SqlDataAdapter adapterAdmin = new SqlDataAdapter("SELECT * FROM Admin WHERE Email='" + login.Email + "' AND Password='" + login.Password + "'", connection);
+            SqlDataAdapter adapterUser = new SqlDataAdapter("SELECT * FROM Users WHERE Email='" + login.Email + "' AND Password='" + login.Password + "'", connection);
+            SqlDataAdapter adapterConsultant = new SqlDataAdapter("SELECT * FROM Consultant WHERE Email='" + login.Email + "' AND Password='" + login.Password + "'", connection);
+            
+            DataTable dtAdmin = new DataTable();
+            DataTable dtUser = new DataTable();
+            DataTable dtConsultant = new DataTable();
+
+            adapterAdmin.Fill(dtAdmin);
+            adapterUser.Fill(dtUser);
+            adapterConsultant.Fill(dtConsultant);
+
+            Response response = new Response();
+
+            if (dtAdmin.Rows.Count > 0)
+            {
+                response.StatusCode = 200;
+                response.StatusMessage = "Login Successful!";
+                AdminRegistration reg = new AdminRegistration();
+                reg.Id = Convert.ToInt32(dtAdmin.Rows[0]["Id"]);
+                reg.Name = Convert.ToString(dtAdmin.Rows[0]["Name"]);
+                reg.Email = Convert.ToString(dtAdmin.Rows[0]["Email"]);
+                response.AdminRegistration = reg;
+            }
+            else if(dtUser.Rows.Count > 0)
+            {
+                response.StatusCode = 200;
+                response.StatusMessage = "Login Successful!";
+                UserRegistration reg = new UserRegistration();
+                reg.Id = Convert.ToInt32(dtUser.Rows[0]["Id"]);
+                reg.Name = Convert.ToString(dtUser.Rows[0]["Name"]);
+                reg.Email = Convert.ToString(dtUser.Rows[0]["Email"]);
+                response.UserRegistration = reg;
+            }
+            else if(dtConsultant.Rows.Count > 0)
+            {
+                response.StatusCode = 200;
+                response.StatusMessage = "Login Successful!";
+                ConsultantRegistration reg = new ConsultantRegistration();
+                reg.Id = Convert.ToInt32(dtConsultant.Rows[0]["Id"]);
+                reg.Name = Convert.ToString(dtConsultant.Rows[0]["Name"]);
+                reg.Email = Convert.ToString(dtConsultant.Rows[0]["Email"]);
+                response.ConsultantRegistration = reg;
+            }
+            else
+            {
+                response.StatusCode = 100;
+                response.StatusMessage = "Login Failed!";
+                response.UserRegistration = null;
+            }
             return response;
         }
     }
