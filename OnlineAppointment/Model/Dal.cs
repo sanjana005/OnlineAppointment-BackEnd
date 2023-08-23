@@ -130,5 +130,50 @@ namespace OnlineAppointment.Model
             }
             return response;
         }
+
+        public Response MakeAppointment(Appointment makeAppointment, SqlConnection connection)
+        {
+            Response response = new Response();
+            SqlCommand cmd = new SqlCommand("INSERT INTO Appointment(UName,CName,Country,Date,Time,UEmail,IsApproved) " +
+                "VALUES('" + makeAppointment.UName + "','" + makeAppointment.CName + "','" + makeAppointment.Country + "','" + makeAppointment.Date + "','" + makeAppointment.Time + "','" + makeAppointment.UEmail + "',0)", connection);
+
+            connection.Open();
+            int i = cmd.ExecuteNonQuery();
+            connection.Close();
+
+            if(i > 0)
+            {
+                response.StatusCode= 200;
+                response.StatusMessage = "Appointment Request Successful!";
+            }
+            else
+            {
+                response.StatusCode = 100;
+                response.StatusMessage = "Appointment Request Failed!";
+            }
+            return response;
+        }
+
+        public Response AppointmentApproval(Appointment appointmentApprove, SqlConnection connection)
+        {
+            Response response = new Response();
+            SqlCommand cmd = new SqlCommand("UPDATE Appointment SET IsApproved = 0 WHERE AppNo = '" + appointmentApprove.AppNo + "'",connection);
+
+            connection.Open();
+            int i = cmd.ExecuteNonQuery();
+            connection.Close();
+
+            if(i > 0)
+            {
+                response.StatusCode=200;
+                response.StatusMessage = "Appointment Approved!";
+            }
+            else
+            {
+                response.StatusCode = 100;
+                response.StatusMessage = "Appointment Approval Failed!";
+            }
+            return response;
+        }
     }
 }
