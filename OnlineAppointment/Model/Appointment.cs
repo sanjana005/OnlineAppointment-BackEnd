@@ -2,7 +2,7 @@
 {
     public class Appointment 
     {
-        public string Id { get; set; }
+        public int AppNo { get; set; }
         public string UName { get; set; }
         public string UEmail { get; set; }
         public string CName { get; set; }
