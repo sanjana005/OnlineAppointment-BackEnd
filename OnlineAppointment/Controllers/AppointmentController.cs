@@ -39,5 +39,41 @@ namespace OnlineAppointment.Controllers
             response = dal.AppointmentApproval(appointmentApprove, connection);
             return response;
         }
+
+        [HttpPost]
+        [Route("AppointmentList")]
+
+        public Response AppointmentList(Appointment appointmentList)
+        {
+            Response response = new Response();
+            SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("DBCon").ToString());
+            Dal dal = new Dal();
+            response = dal.AppointmentList(appointmentList, connection);
+            return response;
+        }
+
+        [HttpPut]
+        [Route("AppointmentUpdate")]
+
+        public Response AppointmentUpdate(Appointment appointmentUpdate)
+        {
+            Response response = new Response();
+            SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("DBCon").ToString());
+            Dal dal = new Dal();
+            response = dal.UpdateAppointment(appointmentUpdate, connection);
+            return response;
+        }
+
+        [HttpDelete]
+        [Route("AppointmentUpdate")]
+
+        public Response AppointmentDelete(Appointment appointmentDelete)
+        {
+            Response response = new Response();
+            SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("DBCon").ToString());
+            Dal dal = new Dal();
+            response = dal.DeleteAppointment(appointmentDelete, connection);
+            return response;
+        }
     }
 }

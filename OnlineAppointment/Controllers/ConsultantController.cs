@@ -7,31 +7,31 @@ namespace OnlineAppointment.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AdminRegistrationController : ControllerBase
+    public class ConsultantController : ControllerBase
     {
         private readonly IConfiguration _configuration;
 
-        public AdminRegistrationController(IConfiguration configuration)
+        public ConsultantController(IConfiguration configuration)
         {
             _configuration = configuration;
         }
 
         [HttpPost]
-        [Route("AdminRegistration")]
+        [Route("ConsultantRegistration")]
 
-        public Response AdminRegistration(AdminRegistration adminRegistration)
+        public Response ConsultantRegistration(ConsultantRegistration consultantRegistration)
         {
             Response response = new Response();
             SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("DBCon").ToString());
             Dal dal = new Dal();
-            response = dal.AdminRegistration(adminRegistration, connection);
+            response = dal.ConsultantRegistration(consultantRegistration, connection);
             return response;
         }
 
         [HttpPost]
-        [Route("AdminLogin")]
+        [Route("ConsultantLogin")]
 
-        public Response AdminLogin(Login login)
+        public Response ConsultantLogin(Login login)
         {
             Response response = new Response();
             SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("DBCon").ToString());
