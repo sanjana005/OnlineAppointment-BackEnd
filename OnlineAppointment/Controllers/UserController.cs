@@ -7,11 +7,11 @@ namespace OnlineAppointment.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserRegistrationController : ControllerBase
+    public class UserController : ControllerBase
     {
         private readonly IConfiguration _configuration;
 
-        public UserRegistrationController(IConfiguration configuration)
+        public UserController(IConfiguration configuration)
         {
             _configuration = configuration;
         }
