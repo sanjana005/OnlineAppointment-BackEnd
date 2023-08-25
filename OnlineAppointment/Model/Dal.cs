@@ -278,6 +278,7 @@ namespace OnlineAppointment.Model
             }
             return response;
         }
+
         public Response DeleteAppointment(Appointment deleteAppointment, SqlConnection connection)
         {
             Response response = new Response();
@@ -318,6 +319,51 @@ namespace OnlineAppointment.Model
             {
                 response.StatusCode= 100;
                 response.StatusMessage = "Falied to Update Appointment!";
+            }
+            return response;
+        }
+
+        public Response ReportsList(SqlConnection connection)
+        {
+            Response response = new Response();
+            SqlDataAdapter adapter = new SqlDataAdapter("SELECT AppNo,UName,CName,Country,Date,Time,IsApproved FROM Appointment", connection);
+            
+            DataTable dt = new DataTable();
+            adapter.Fill(dt);
+            List<Reports> listReports = new List<Reports>();
+
+            if (dt.Rows.Count > 0)
+            {
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    Reports reportsList = new Reports();
+                    reportsList.AppNo = Convert.ToString(dt.Rows[i]["AppNo"]);
+                    reportsList.UName = Convert.ToString(dt.Rows[i]["UName"]);
+                    reportsList.CName = Convert.ToString(dt.Rows[i]["CName"]);
+                    reportsList.Country = Convert.ToString(dt.Rows[i]["Country"]);
+                    reportsList.Date = Convert.ToString(dt.Rows[i]["Date"]);
+                    reportsList.Time = Convert.ToString(dt.Rows[i]["Time"]);
+                    reportsList.IsApproved = Convert.ToInt32(dt.Rows[i]["IsApproved"]);
+                    listReports.Add(reportsList);
+                }
+                if (listReports.Count > 0)
+                {
+                    response.StatusCode = 200;
+                    response.StatusMessage = "Report Data Found!";
+                    response.listReports = listReports;
+                }
+                else
+                {
+                    response.StatusCode = 100;
+                    response.StatusMessage = "Report Data Not Found!";
+                    response.listAppointment = null;
+                }
+            }
+            else
+            {
+                response.StatusCode = 100;
+                response.StatusMessage = "Report Data Not Found!";
+                response.listAppointment = null;
             }
             return response;
         }
