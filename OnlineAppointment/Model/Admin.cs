@@ -1,6 +1,6 @@
 ﻿namespace OnlineAppointment.Model
 {
-    public class AdminRegistration
+    public class Admin
     {
         public int Id { get; set; }
         public string Name { get; set; }

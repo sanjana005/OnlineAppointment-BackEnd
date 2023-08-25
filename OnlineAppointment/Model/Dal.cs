@@ -5,7 +5,7 @@ namespace OnlineAppointment.Model
 {
     public class Dal
     {
-        public Response UserRegistration(UserRegistration userRegistration, SqlConnection connection)
+        public Response UserRegistration(User userRegistration, SqlConnection connection)
         {
             Response response = new Response();
             SqlCommand cmd = new SqlCommand("INSERT INTO Users(Name,Email,Password,Contact,Country,JobType) VALUES('" + userRegistration.Name + "','" + userRegistration.Email + "','" + userRegistration.Password + "'," +
@@ -29,7 +29,7 @@ namespace OnlineAppointment.Model
             return response;
         }
 
-        public Response ConsultantRegistration(ConsultantRegistration consultantRegistration, SqlConnection connection)
+        public Response ConsultantRegistration(Consultant consultantRegistration, SqlConnection connection)
         {
             Response response = new Response();
             SqlCommand cmd = new SqlCommand("INSERT INTO Consultant(Name,Email,Password,Contact,Country,Date,Time) VALUES('" + consultantRegistration.Name + "','" + consultantRegistration.Email + "','" + consultantRegistration.Password + "'," +
@@ -53,7 +53,52 @@ namespace OnlineAppointment.Model
             return response;
         }
 
-        public Response AdminRegistration(AdminRegistration adminRegistration, SqlConnection connection)
+        public Response UpdateConsultant(Consultant updateConsultant, SqlConnection connection)
+        {
+            Response response = new Response();
+            SqlCommand cmd = new SqlCommand("UPDATE Consultant SET Name = '" + updateConsultant.Name + "',Email  = '" + updateConsultant.Email + "', Password = '" + updateConsultant.Password + "'," +
+                "Contact = '" + updateConsultant.Contact + "',Country = '" + updateConsultant.Country + "',Date = '" + updateConsultant.Date + "',Time = '" + updateConsultant.Time + "' WHERE ID = '"+updateConsultant.Id+"'", connection);
+
+            connection.Open() ;
+            int i = cmd.ExecuteNonQuery();
+            connection.Close();
+
+            if(i > 0)
+            {
+                response.StatusCode = 200;
+                response.StatusMessage = "Consultant Data Updated!";
+            }
+            else
+            {
+                response.StatusCode = 100;
+                response.StatusMessage = "Failed to Update Consultant Data!";
+            }
+            return response;
+        }
+
+        public Response DeleteConsultant(Consultant deleteConsultant, SqlConnection connection)
+        {
+            Response response = new Response();
+            SqlCommand cmd = new SqlCommand("DELETE FROM Consultant WHERE ID = '" + deleteConsultant.Id + "'", connection);
+            
+            connection.Open();
+            int i = cmd.ExecuteNonQuery();
+            connection.Close();
+
+            if (i > 0)
+            {
+                response.StatusCode = 200;
+                response.StatusMessage = "Consultant Deleted!";
+            }
+            else
+            {
+                response.StatusCode = 100;
+                response.StatusMessage = "Consultant Deletion Falied!";
+            }
+            return response;
+        }
+
+        public Response AdminRegistration(Admin adminRegistration, SqlConnection connection)
         {
             Response response = new Response();
             SqlCommand cmd = new SqlCommand("INSERT INTO Admin(Name,Email,Password) VALUES('" + adminRegistration.Name + "','" + adminRegistration.Email + "','" + adminRegistration.Password + "')", connection);
@@ -96,7 +141,7 @@ namespace OnlineAppointment.Model
             {
                 response.StatusCode = 200;
                 response.StatusMessage = "Login Successful!";
-                AdminRegistration reg = new AdminRegistration();
+                Admin reg = new Admin();
                 reg.Id = Convert.ToInt32(dtAdmin.Rows[0]["Id"]);
                 reg.Name = Convert.ToString(dtAdmin.Rows[0]["Name"]);
                 reg.Email = Convert.ToString(dtAdmin.Rows[0]["Email"]);
@@ -106,7 +151,7 @@ namespace OnlineAppointment.Model
             {
                 response.StatusCode = 200;
                 response.StatusMessage = "Login Successful!";
-                UserRegistration reg = new UserRegistration();
+                User reg = new User();
                 reg.Id = Convert.ToInt32(dtUser.Rows[0]["Id"]);
                 reg.Name = Convert.ToString(dtUser.Rows[0]["Name"]);
                 reg.Email = Convert.ToString(dtUser.Rows[0]["Email"]);
@@ -116,7 +161,7 @@ namespace OnlineAppointment.Model
             {
                 response.StatusCode = 200;
                 response.StatusMessage = "Login Successful!";
-                ConsultantRegistration reg = new ConsultantRegistration();
+                Consultant reg = new Consultant();
                 reg.Id = Convert.ToInt32(dtConsultant.Rows[0]["Id"]);
                 reg.Name = Convert.ToString(dtConsultant.Rows[0]["Name"]);
                 reg.Email = Convert.ToString(dtConsultant.Rows[0]["Email"]);

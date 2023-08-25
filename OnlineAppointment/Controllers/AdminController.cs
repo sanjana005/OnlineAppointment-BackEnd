@@ -19,7 +19,7 @@ namespace OnlineAppointment.Controllers
         [HttpPost]
         [Route("AdminRegistration")]
 
-        public Response AdminRegistration(AdminRegistration adminRegistration)
+        public Response AdminRegistration(Admin adminRegistration)
         {
             Response response = new Response();
             SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("DBCon").ToString());
