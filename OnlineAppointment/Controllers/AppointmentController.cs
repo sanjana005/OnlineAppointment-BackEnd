@@ -65,7 +65,7 @@ namespace OnlineAppointment.Controllers
         }
 
         [HttpDelete]
-        [Route("AppointmentUpdate")]
+        [Route("AppointmentDelete")]
 
         public Response AppointmentDelete(Appointment appointmentDelete)
         {

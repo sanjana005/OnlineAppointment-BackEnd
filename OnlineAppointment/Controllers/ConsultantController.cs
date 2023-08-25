@@ -19,7 +19,7 @@ namespace OnlineAppointment.Controllers
         [HttpPost]
         [Route("ConsultantRegistration")]
 
-        public Response ConsultantRegistration(ConsultantRegistration consultantRegistration)
+        public Response ConsultantRegistration(Consultant consultantRegistration)
         {
             Response response = new Response();
             SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("DBCon").ToString());
@@ -37,6 +37,30 @@ namespace OnlineAppointment.Controllers
             SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("DBCon").ToString());
             Dal dal = new Dal();
             response = dal.Login(login, connection);
+            return response;
+        }
+
+        [HttpPut]
+        [Route("ConsultantUpdate")]
+
+        public Response ConsultantUpdate(Consultant consultantUpdate)
+        {
+            Response response = new Response();
+            SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("DBCon").ToString());
+            Dal dal = new Dal();
+            response = dal.UpdateConsultant(consultantUpdate, connection);
+            return response;
+        }
+
+        [HttpDelete]
+        [Route("ConsultantDelete")]
+
+        public Response ConsultantDelete(Consultant consutantDelete)
+        {
+            Response response = new Response();
+            SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("DBCon").ToString());
+            Dal dal = new Dal();
+            response = dal.DeleteConsultant(consutantDelete, connection);
             return response;
         }
     }
