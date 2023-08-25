@@ -157,7 +157,7 @@ namespace OnlineAppointment.Model
         public Response AppointmentApproval(Appointment appointmentApprove, SqlConnection connection)
         {
             Response response = new Response();
-            SqlCommand cmd = new SqlCommand("UPDATE Appointment SET IsApproved = 0 WHERE AppNo = '" + appointmentApprove.AppNo + "'",connection);
+            SqlCommand cmd = new SqlCommand("UPDATE Appointment SET IsApproved = 1 WHERE AppNo = '" + appointmentApprove.AppNo + "'",connection);
 
             connection.Open();
             int i = cmd.ExecuteNonQuery();
