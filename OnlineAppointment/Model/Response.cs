@@ -11,5 +11,6 @@
         public AdminRegistration AdminRegistration { get; set; }
         public List<AdminRegistration> listARegistration { get; set; }
         public List<Appointment> listAppointment { get; set; }
+        public List<Reports> listReports { get; set; }
     }
 }
