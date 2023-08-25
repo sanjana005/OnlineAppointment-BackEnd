@@ -1,6 +1,6 @@
 ﻿namespace OnlineAppointment.Model
 {
-    public class UserRegistration
+    public class Consultant
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -8,6 +8,7 @@
         public string Password { get; set; }
         public string Contact { get; set; }
         public string Country { get; set; }
-        public string JobType { get; set; }
+        public string Date { get; set; }
+        public string Time { get; set; }
     }
 }
