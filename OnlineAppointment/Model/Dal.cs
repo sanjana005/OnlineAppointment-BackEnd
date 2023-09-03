@@ -32,8 +32,8 @@ namespace OnlineAppointment.Model
         public Response ConsultantRegistration(Consultant consultantRegistration, SqlConnection connection)
         {
             Response response = new Response();
-            SqlCommand cmd = new SqlCommand("INSERT INTO Consultant(Name,Email,Password,Contact,Country,Date,Time, To_Time) VALUES('" + consultantRegistration.Name + "','" + consultantRegistration.Email + "','" + consultantRegistration.Password + "'," +
-                "'" + consultantRegistration.Contact + "','" + consultantRegistration.Country + "','" + consultantRegistration.Date + "','" + consultantRegistration.Time + "','" + consultantRegistration.To_Time + "')", connection);
+            SqlCommand cmd = new SqlCommand("INSERT INTO Consultant(Name,Email,Password,Contact,Country,Date,Time) VALUES('" + consultantRegistration.Name + "','" + consultantRegistration.Email + "','" + consultantRegistration.Password + "'," +
+                "'" + consultantRegistration.Contact + "','" + consultantRegistration.Country + "','" + consultantRegistration.Date + "','" + consultantRegistration.Time + "')", connection);
 
             connection.Open();
             int i = cmd.ExecuteNonQuery();
@@ -57,7 +57,7 @@ namespace OnlineAppointment.Model
         {
             Response response = new Response();
             SqlCommand cmd = new SqlCommand("UPDATE Consultant SET Name = '" + updateConsultant.Name + "',Email  = '" + updateConsultant.Email + "', Password = '" + updateConsultant.Password + "'," +
-                "Contact = '" + updateConsultant.Contact + "',Country = '" + updateConsultant.Country + "',Date = '" + updateConsultant.Date + "',Time = '" + updateConsultant.Time + "',To_Time = '" + updateConsultant.To_Time + "' WHERE ID = '" + updateConsultant.Id+"'", connection);
+                "Contact = '" + updateConsultant.Contact + "',Country = '" + updateConsultant.Country + "',Date = '" + updateConsultant.Date + "',Time = '" + updateConsultant.Time + "' WHERE ID = '"+updateConsultant.Id+"'", connection);
 
             connection.Open() ;
             int i = cmd.ExecuteNonQuery();
@@ -278,7 +278,6 @@ namespace OnlineAppointment.Model
             }
             return response;
         }
-
         public Response DeleteAppointment(Appointment deleteAppointment, SqlConnection connection)
         {
             Response response = new Response();
@@ -290,12 +289,12 @@ namespace OnlineAppointment.Model
             if( i > 0 )
             {
                 response.StatusCode = 200;
-                response.StatusMessage = "Appointment Deleted!";
+                response.StatusMessage = "Appointment Deleted1";
             }
             else 
             { 
                 response.StatusCode = 100;
-                response.StatusMessage = "Appointment Deletion Falied!";
+                response.StatusMessage = "Appointment Deletio Falied!";
             }
             return response;
         }
@@ -318,54 +317,7 @@ namespace OnlineAppointment.Model
             else
             {
                 response.StatusCode= 100;
-                response.StatusMessage = "Failed to Update Appointment!";
-            }
-            return response;
-        }
-
-        public Response ConsultantList(SqlConnection connection)
-        {
-            Response response = new Response();
-            SqlDataAdapter adapter = new SqlDataAdapter("SELECT ID,Name,Email,Password,Country,Date,Time,Contact, To_Time FROM Consultant", connection);
-
-            DataTable dt = new DataTable();
-            adapter.Fill(dt);
-            List<Consultant> listConsultant = new List<Consultant>();
-
-            if (dt.Rows.Count > 0)
-            {
-                for (int i = 0; i < dt.Rows.Count; i++)
-                {
-                    Consultant consultantList = new Consultant();
-                    consultantList.Id = Convert.ToInt32(dt.Rows[i]["Id"]);
-                    consultantList.Name = Convert.ToString(dt.Rows[i]["Name"]);
-                    consultantList.Email = Convert.ToString(dt.Rows[i]["Email"]);
-                    consultantList.Password = Convert.ToString(dt.Rows[i]["Password"]);
-                    consultantList.Country = Convert.ToString(dt.Rows[i]["Country"]);
-                    consultantList.Date = Convert.ToString(dt.Rows[i]["Date"]);
-                    consultantList.Time = Convert.ToString(dt.Rows[i]["Time"]);
-                    consultantList.To_Time = Convert.ToString(dt.Rows[i]["To_Time"]);
-                    consultantList.Contact = Convert.ToString(dt.Rows[i]["Contact"]);
-                    listConsultant.Add(consultantList);
-                }
-                if (listConsultant.Count > 0)
-                {
-                    response.StatusCode = 200;
-                    response.StatusMessage = "Consultant Data Found.";
-                    response.listCRegistration = listConsultant;
-                }
-                else
-                {
-                    response.StatusCode = 100;
-                    response.StatusMessage = "Consultant Data Not Found!";
-                    response.listCRegistration = null;
-                }
-            }
-            else
-            {
-                response.StatusCode = 100;
-                response.StatusMessage = "Consultant Data Not Found!";
-                response.listCRegistration = null;
+                response.StatusMessage = "Falied to Update Appointment!";
             }
             return response;
         }

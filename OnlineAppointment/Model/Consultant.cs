@@ -10,6 +10,5 @@
         public string Country { get; set; }
         public string Date { get; set; }
         public string Time { get; set; }
-        public string To_Time { get; set; }
     }
 }
