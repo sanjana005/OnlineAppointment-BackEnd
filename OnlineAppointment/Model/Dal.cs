@@ -32,8 +32,8 @@ namespace OnlineAppointment.Model
         public Response ConsultantRegistration(Consultant consultantRegistration, SqlConnection connection)
         {
             Response response = new Response();
-            SqlCommand cmd = new SqlCommand("INSERT INTO Consultant(Name,Email,Password,Contact,Country,Date,Time) VALUES('" + consultantRegistration.Name + "','" + consultantRegistration.Email + "','" + consultantRegistration.Password + "'," +
-                "'" + consultantRegistration.Contact + "','" + consultantRegistration.Country + "','" + consultantRegistration.Date + "','" + consultantRegistration.Time + "')", connection);
+            SqlCommand cmd = new SqlCommand("INSERT INTO Consultant(Name,Email,Password,Contact,Country,Date,Time,To_Time) VALUES('" + consultantRegistration.Name + "','" + consultantRegistration.Email + "','" + consultantRegistration.Password + "'," +
+                "'" + consultantRegistration.Contact + "','" + consultantRegistration.Country + "','" + consultantRegistration.Date + "','" + consultantRegistration.Time + "','" + consultantRegistration.To_Time + "')", connection);
 
             connection.Open();
             int i = cmd.ExecuteNonQuery();
@@ -57,7 +57,7 @@ namespace OnlineAppointment.Model
         {
             Response response = new Response();
             SqlCommand cmd = new SqlCommand("UPDATE Consultant SET Name = '" + updateConsultant.Name + "',Email  = '" + updateConsultant.Email + "', Password = '" + updateConsultant.Password + "'," +
-                "Contact = '" + updateConsultant.Contact + "',Country = '" + updateConsultant.Country + "',Date = '" + updateConsultant.Date + "',Time = '" + updateConsultant.Time + "' WHERE ID = '"+updateConsultant.Id+"'", connection);
+                "Contact = '" + updateConsultant.Contact + "',Country = '" + updateConsultant.Country + "',Date = '" + updateConsultant.Date + "',Time = '" + updateConsultant.Time + "',To_Time = '" + updateConsultant.To_Time + "' WHERE ID = '" + updateConsultant.Id+"'", connection);
 
             connection.Open() ;
             int i = cmd.ExecuteNonQuery();
@@ -290,12 +290,12 @@ namespace OnlineAppointment.Model
             if( i > 0 )
             {
                 response.StatusCode = 200;
-                response.StatusMessage = "Appointment Deleted1";
+                response.StatusMessage = "Appointment Deleted.";
             }
             else 
             { 
                 response.StatusCode = 100;
-                response.StatusMessage = "Appointment Deletio Falied!";
+                response.StatusMessage = "Appointment Deletion Failed!";
             }
             return response;
         }
@@ -313,12 +313,12 @@ namespace OnlineAppointment.Model
             if( i > 0 )
             {
                 response.StatusCode = 200;
-                response.StatusMessage = "Appointment Updated!";
+                response.StatusMessage = "Appointment Updated.";
             }
             else
             {
                 response.StatusCode= 100;
-                response.StatusMessage = "Falied to Update Appointment!";
+                response.StatusMessage = "Failed to Update Appointment!";
             }
             return response;
         }
