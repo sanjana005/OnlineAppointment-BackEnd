@@ -40,6 +40,18 @@ namespace OnlineAppointment.Controllers
             return response;
         }
 
+        [HttpGet]
+        [Route("ConsultantList")]
+
+        public Response ConsultantList()
+        {
+            Response response = new Response();
+            SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("DBCon").ToString());
+            Dal dal = new Dal();
+            response = dal.ConsultantList(connection);
+            return response;
+        }
+
         [HttpPut]
         [Route("ConsultantUpdate")]
 

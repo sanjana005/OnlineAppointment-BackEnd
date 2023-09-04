@@ -367,5 +367,52 @@ namespace OnlineAppointment.Model
             }
             return response;
         }
+
+        public Response ConsultantList(SqlConnection connection)
+        {
+            Response response = new Response();
+            SqlDataAdapter adapter = new SqlDataAdapter("SELECT ID,Name,Email,Password,Country,Date,Time,Contact, To_Time FROM Consultant", connection);
+
+            DataTable dt = new DataTable();
+            adapter.Fill(dt);
+            List<Consultant> listConsultant = new List<Consultant>();
+
+            if (dt.Rows.Count > 0)
+            {
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    Consultant consultantList = new Consultant();
+                    consultantList.Id = Convert.ToInt32(dt.Rows[i]["Id"]);
+                    consultantList.Name = Convert.ToString(dt.Rows[i]["Name"]);
+                    consultantList.Email = Convert.ToString(dt.Rows[i]["Email"]);
+                    consultantList.Password = Convert.ToString(dt.Rows[i]["Password"]);
+                    consultantList.Country = Convert.ToString(dt.Rows[i]["Country"]);
+                    consultantList.Date = Convert.ToString(dt.Rows[i]["Date"]);
+                    consultantList.Time = Convert.ToString(dt.Rows[i]["Time"]);
+                    consultantList.To_Time = Convert.ToString(dt.Rows[i]["To_Time"]);
+                    consultantList.Contact = Convert.ToString(dt.Rows[i]["Contact"]);
+                    listConsultant.Add(consultantList);
+                }
+                if (listConsultant.Count > 0)
+                {
+                    response.StatusCode = 200;
+                    response.StatusMessage = "Consultant Data Found.";
+                    response.listCRegistration = listConsultant;
+                }
+                else
+                {
+                    response.StatusCode = 100;
+                    response.StatusMessage = "Consultant Data Not Found!";
+                    response.listCRegistration = null;
+                }
+            }
+            else
+            {
+                response.StatusCode = 100;
+                response.StatusMessage = "Consultant Data Not Found!";
+                response.listCRegistration = null;
+            }
+            return response;
+        }
     }
 }
