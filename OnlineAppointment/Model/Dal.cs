@@ -414,5 +414,124 @@ namespace OnlineAppointment.Model
             }
             return response;
         }
+
+        public Response AddSchedule(Schedule addSchedule, SqlConnection connection)
+        {
+            Response response = new Response();
+            SqlCommand cmd = new SqlCommand("INSERT INTO Consultant_Schedule(Name,Email,Date,Time_From,Time_To) " +
+                "VALUES('" + addSchedule.Name + "','" + addSchedule.Email + "','" + addSchedule.Date + "','" + addSchedule.Time + "','" + addSchedule.To_Time + "')", connection);
+
+            connection.Open();
+            int i = cmd.ExecuteNonQuery();
+            connection.Close();
+
+            if (i > 0)
+            {
+                response.StatusCode = 200;
+                response.StatusMessage = "Time Slot Scheduled Successfully.";
+            }
+            else
+            {
+                response.StatusCode = 100;
+                response.StatusMessage = "Scheduling Failed!";
+            }
+            return response;
+        }
+
+        public Response ScheduleList(Schedule scheduleLst, SqlConnection connection)
+        {
+            Response response = new Response();
+            SqlDataAdapter adapter = null;
+            
+            if (scheduleLst.Type == "Consultant")
+            {
+                adapter = new SqlDataAdapter("SELECT * FROM Consultant_Schedule WHERE Email = '" + scheduleLst.Email + "'", connection);
+            }
+            else
+            {
+                adapter = new SqlDataAdapter("SELECT * FROM Consultant_Schedule", connection);
+            }
+
+            DataTable dt = new DataTable();
+            adapter.Fill(dt);
+            List<Schedule> listSchedule = new List<Schedule>();
+            if (dt.Rows.Count > 0)
+            {
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    Schedule scheduleList = new Schedule();
+                    scheduleList.Id = Convert.ToInt32(dt.Rows[i]["Id"]);
+                    scheduleList.Name = Convert.ToString(dt.Rows[i]["Name"]);
+                    scheduleList.Email = Convert.ToString(dt.Rows[i]["Email"]);
+                    scheduleList.Date = Convert.ToString(dt.Rows[i]["Date"]);
+                    scheduleList.Time = Convert.ToString(dt.Rows[i]["Time_From"]);
+                    scheduleList.To_Time = Convert.ToString(dt.Rows[i]["Time_To"]);
+                    listSchedule.Add(scheduleList);
+                }
+                if (listSchedule.Count > 0)
+                {
+                    response.StatusCode = 200;
+                    response.StatusMessage = "Schedule Data Found.";
+                    response.listSchedule = listSchedule;
+                }
+                else
+                {
+                    response.StatusCode = 100;
+                    response.StatusMessage = "Schedule Data Not Found!";
+                    response.listSchedule = null;
+                }
+            }
+            else
+            {
+                response.StatusCode = 100;
+                response.StatusMessage = "Schedule Data Not Found!";
+                response.listSchedule = null;
+            }
+            return response;
+        }
+
+        public Response DeleteSchedule(Schedule deleteSchedule, SqlConnection connection)
+        {
+            Response response = new Response();
+            SqlCommand cmd = new SqlCommand("DELETE FROM Consultant_Schedule WHERE ID = '" + deleteSchedule.Id + "'", connection);
+            connection.Open();
+            int i = cmd.ExecuteNonQuery();
+            connection.Close();
+
+            if (i > 0)
+            {
+                response.StatusCode = 200;
+                response.StatusMessage = "Schedule Deleted.";
+            }
+            else
+            {
+                response.StatusCode = 100;
+                response.StatusMessage = "Schedule Deletion Failed!";
+            }
+            return response;
+        }
+
+        public Response ScheduleUpdate(Schedule updateSchedule, SqlConnection connection)
+        {
+            Response response = new Response();
+            SqlCommand cmd = new SqlCommand("UPDATE Consultant_Schedule SET Name = '" + updateSchedule.Name + "',Email = '" + updateSchedule.Email + "'," +
+                "Date = '" + updateSchedule.Date + "',Time_From = '" + updateSchedule.Time + "',Time_To = '" + updateSchedule.To_Time + "' WHERE ID = '" + updateSchedule.Id + "'", connection);
+
+            connection.Open();
+            int i = cmd.ExecuteNonQuery();
+            connection.Close();
+
+            if (i > 0)
+            {
+                response.StatusCode = 200;
+                response.StatusMessage = "Schedule Updated.";
+            }
+            else
+            {
+                response.StatusCode = 100;
+                response.StatusMessage = "Failed to Update Schedule!";
+            }
+            return response;
+        }
     }
 }
