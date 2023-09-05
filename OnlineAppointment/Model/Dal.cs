@@ -123,56 +123,141 @@ namespace OnlineAppointment.Model
 
         public Response Login(Login login, SqlConnection connection)
         {
-            SqlDataAdapter adapterAdmin = new SqlDataAdapter("SELECT * FROM Admin WHERE Email='" + login.Email + "' AND Password='" + login.Password + "'", connection);
-            SqlDataAdapter adapterUser = new SqlDataAdapter("SELECT * FROM Users WHERE Email='" + login.Email + "' AND Password='" + login.Password + "'", connection);
-            SqlDataAdapter adapterConsultant = new SqlDataAdapter("SELECT * FROM Consultant WHERE Email='" + login.Email + "' AND Password='" + login.Password + "'", connection);
-            
-            DataTable dtAdmin = new DataTable();
-            DataTable dtUser = new DataTable();
-            DataTable dtConsultant = new DataTable();
-
-            adapterAdmin.Fill(dtAdmin);
-            adapterUser.Fill(dtUser);
-            adapterConsultant.Fill(dtConsultant);
-
             Response response = new Response();
 
-            if (dtAdmin.Rows.Count > 0)
+            if (login.UserType == "Admin")
             {
-                response.StatusCode = 200;
-                response.StatusMessage = "Login Successful!";
-                Admin reg = new Admin();
-                reg.Id = Convert.ToInt32(dtAdmin.Rows[0]["Id"]);
-                reg.Name = Convert.ToString(dtAdmin.Rows[0]["Name"]);
-                reg.Email = Convert.ToString(dtAdmin.Rows[0]["Email"]);
-                response.AdminRegistration = reg;
+                SqlDataAdapter adapterAdmin = new SqlDataAdapter("SELECT * FROM Admin WHERE Email='" + login.Email + "' AND Password='" + login.Password + "'", connection);
+
+                DataTable dtAdmin = new DataTable();
+                adapterAdmin.Fill(dtAdmin);
+
+
+                if (dtAdmin.Rows.Count > 0)
+                {
+                    response.StatusCode = 200;
+                    response.StatusMessage = "Login Successful!";
+                    Admin reg = new Admin();
+                    reg.Id = Convert.ToInt32(dtAdmin.Rows[0]["Id"]);
+                    reg.Name = Convert.ToString(dtAdmin.Rows[0]["Name"]);
+                    reg.Email = Convert.ToString(dtAdmin.Rows[0]["Email"]);
+                    reg.UserType = "Admin";
+                    response.AdminRegistration = reg;
+                }
+                else
+                {
+                    response.StatusCode = 100;
+                    response.StatusMessage = "Login Failed!";
+                    response.UserRegistration = null;
+                }
+
             }
-            else if(dtUser.Rows.Count > 0)
+            else if (login.UserType == "User")
             {
-                response.StatusCode = 200;
-                response.StatusMessage = "Login Successful!";
-                User reg = new User();
-                reg.Id = Convert.ToInt32(dtUser.Rows[0]["Id"]);
-                reg.Name = Convert.ToString(dtUser.Rows[0]["Name"]);
-                reg.Email = Convert.ToString(dtUser.Rows[0]["Email"]);
-                response.UserRegistration = reg;
-            }
-            else if(dtConsultant.Rows.Count > 0)
-            {
-                response.StatusCode = 200;
-                response.StatusMessage = "Login Successful!";
-                Consultant reg = new Consultant();
-                reg.Id = Convert.ToInt32(dtConsultant.Rows[0]["Id"]);
-                reg.Name = Convert.ToString(dtConsultant.Rows[0]["Name"]);
-                reg.Email = Convert.ToString(dtConsultant.Rows[0]["Email"]);
-                response.ConsultantRegistration = reg;
+                SqlDataAdapter adapterUser = new SqlDataAdapter("SELECT * FROM Users WHERE Email='" + login.Email + "' AND Password='" + login.Password + "'", connection);
+
+                DataTable dtUser = new DataTable();
+                adapterUser.Fill(dtUser);
+
+
+                if (dtUser.Rows.Count > 0)
+                {
+                    response.StatusCode = 200;
+                    response.StatusMessage = "Login Successful!";
+                    User reg = new User();
+                    reg.Id = Convert.ToInt32(dtUser.Rows[0]["Id"]);
+                    reg.Name = Convert.ToString(dtUser.Rows[0]["Name"]);
+                    reg.Email = Convert.ToString(dtUser.Rows[0]["Email"]);
+                    reg.UserType = "User";
+                    response.UserRegistration = reg;
+                }
+                else
+                {
+                    response.StatusCode = 100;
+                    response.StatusMessage = "Login Failed!";
+                    response.UserRegistration = null;
+                }
             }
             else
             {
-                response.StatusCode = 100;
-                response.StatusMessage = "Login Failed!";
-                response.UserRegistration = null;
+                SqlDataAdapter adapterConsultant = new SqlDataAdapter("SELECT * FROM Consultant WHERE Email='" + login.Email + "' AND Password='" + login.Password + "'", connection);
+                
+                DataTable dtConsultant = new DataTable();
+                adapterConsultant.Fill(dtConsultant);
+
+
+                if (dtConsultant.Rows.Count > 0)
+                {
+                    response.StatusCode = 200;
+                    response.StatusMessage = "Login Successful!";
+                    Consultant reg = new Consultant();
+                    reg.Id = Convert.ToInt32(dtConsultant.Rows[0]["Id"]);
+                    reg.Name = Convert.ToString(dtConsultant.Rows[0]["Name"]);
+                    reg.Email = Convert.ToString(dtConsultant.Rows[0]["Email"]);
+                    reg.UserType = "Consultant";
+                    response.ConsultantRegistration = reg;
+                }
+                else
+                {
+                    response.StatusCode = 100;
+                    response.StatusMessage = "Login Failed!";
+                    response.UserRegistration = null;
+                }
             }
+     
+            //SqlDataAdapter adapterAdmin = new SqlDataAdapter("SELECT * FROM Admin WHERE Email='" + login.Email + "' AND Password='" + login.Password + "'", connection);
+            //SqlDataAdapter adapterUser = new SqlDataAdapter("SELECT * FROM Users WHERE Email='" + login.Email + "' AND Password='" + login.Password + "'", connection);
+            //SqlDataAdapter adapterConsultant = new SqlDataAdapter("SELECT * FROM Consultant WHERE Email='" + login.Email + "' AND Password='" + login.Password + "'", connection);
+            
+            //DataTable dtAdmin = new DataTable();
+            //DataTable dtUser = new DataTable();
+            //DataTable dtConsultant = new DataTable();
+
+            //adapterAdmin.Fill(dtAdmin);
+            //adapterUser.Fill(dtUser);
+            //adapterConsultant.Fill(dtConsultant);
+
+            //Response response = new Response();
+
+            //if (dtAdmin.Rows.Count > 0)
+            //{
+            //    response.StatusCode = 200;
+            //    response.StatusMessage = "Login Successful!";
+            //    Admin reg = new Admin();
+            //    reg.Id = Convert.ToInt32(dtAdmin.Rows[0]["Id"]);
+            //    reg.Name = Convert.ToString(dtAdmin.Rows[0]["Name"]);
+            //    reg.Email = Convert.ToString(dtAdmin.Rows[0]["Email"]);
+            //    reg.UserType = "Admin";
+            //    response.AdminRegistration = reg;
+            //}
+            //else if(dtUser.Rows.Count > 0)
+            //{
+            //    response.StatusCode = 200;
+            //    response.StatusMessage = "Login Successful!";
+            //    User reg = new User();
+            //    reg.Id = Convert.ToInt32(dtUser.Rows[0]["Id"]);
+            //    reg.Name = Convert.ToString(dtUser.Rows[0]["Name"]);
+            //    reg.Email = Convert.ToString(dtUser.Rows[0]["Email"]);
+            //    reg.UserType = "User";
+            //    response.UserRegistration = reg;
+            //}
+            //else if(dtConsultant.Rows.Count > 0)
+            //{
+            //    response.StatusCode = 200;
+            //    response.StatusMessage = "Login Successful!";
+            //    Consultant reg = new Consultant();
+            //    reg.Id = Convert.ToInt32(dtConsultant.Rows[0]["Id"]);
+            //    reg.Name = Convert.ToString(dtConsultant.Rows[0]["Name"]);
+            //    reg.Email = Convert.ToString(dtConsultant.Rows[0]["Email"]);
+            //    reg.UserType = "Consultant";
+            //    response.ConsultantRegistration = reg;
+            //}
+            //else
+            //{
+            //    response.StatusCode = 100;
+            //    response.StatusMessage = "Login Failed!";
+            //    response.UserRegistration = null;
+            //}
             return response;
         }
 
@@ -231,7 +316,7 @@ namespace OnlineAppointment.Model
             }
             else if(appointmentLst.Type == "Consultant")
             {
-                adapter = new SqlDataAdapter("SELECT * FROM Appointment WHERE CEmail = '" + appointmentLst.CEmail + "'", connection);
+                adapter = new SqlDataAdapter("SELECT * FROM Appointment WHERE CEmail = '" + appointmentLst.CEmail + "' AND IsApproved = 1 ", connection);
             }
             else
             {
