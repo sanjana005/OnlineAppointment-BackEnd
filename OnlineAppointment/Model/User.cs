@@ -9,5 +9,6 @@
         public string Contact { get; set; }
         public string Country { get; set; }
         public string JobType { get; set; }
+        public string UserType { get; set; }
     }
 }

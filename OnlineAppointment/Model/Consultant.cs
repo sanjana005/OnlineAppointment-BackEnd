@@ -11,5 +11,6 @@
         public string Date { get; set; }
         public string Time { get; set; }
         public string To_Time { get; set; }
+        public string UserType { get; set; }
     }
 }
