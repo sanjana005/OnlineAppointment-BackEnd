@@ -32,8 +32,8 @@ namespace OnlineAppointment.Model
         public Response ConsultantRegistration(Consultant consultantRegistration, SqlConnection connection)
         {
             Response response = new Response();
-            SqlCommand cmd = new SqlCommand("INSERT INTO Consultant(Name,Email,Password,Contact,Country,Date,Time,To_Time) VALUES('" + consultantRegistration.Name + "','" + consultantRegistration.Email + "','" + consultantRegistration.Password + "'," +
-                "'" + consultantRegistration.Contact + "','" + consultantRegistration.Country + "','" + consultantRegistration.Date + "','" + consultantRegistration.Time + "','" + consultantRegistration.To_Time + "')", connection);
+            SqlCommand cmd = new SqlCommand("INSERT INTO Consultant(Name,Email,Password,Contact,Country) VALUES('" + consultantRegistration.Name + "','" + consultantRegistration.Email + "','" + consultantRegistration.Password + "'," +
+                "'" + consultantRegistration.Contact + "','" + consultantRegistration.Country + "')", connection);
 
             connection.Open();
             int i = cmd.ExecuteNonQuery();
@@ -76,6 +76,29 @@ namespace OnlineAppointment.Model
             return response;
         }
 
+        public Response UpdateUser(User updateUser, SqlConnection connection)
+        {
+            Response response = new Response();
+            SqlCommand cmd = new SqlCommand("UPDATE Users SET Name = '" + updateUser.Name + "',Email  = '" + updateUser.Email + "', Password = '" + updateUser.Password + "'," +
+                "Contact = '" + updateUser.Contact + "',Country = '" + updateUser.Country + "',JobType = '" + updateUser.JobType + "' WHERE ID = '" + updateUser.Id + "'", connection);
+
+            connection.Open();
+            int i = cmd.ExecuteNonQuery();
+            connection.Close();
+
+            if (i > 0)
+            {
+                response.StatusCode = 200;
+                response.StatusMessage = "User Data Updated!";
+            }
+            else
+            {
+                response.StatusCode = 100;
+                response.StatusMessage = "Failed to Update User Data!";
+            }
+            return response;
+        }
+
         public Response DeleteConsultant(Consultant deleteConsultant, SqlConnection connection)
         {
             Response response = new Response();
@@ -94,6 +117,28 @@ namespace OnlineAppointment.Model
             {
                 response.StatusCode = 100;
                 response.StatusMessage = "Consultant Deletion Falied!";
+            }
+            return response;
+        }
+
+        public Response DeleteUser(User deleteUser, SqlConnection connection)
+        {
+            Response response = new Response();
+            SqlCommand cmd = new SqlCommand("DELETE FROM Users WHERE ID = '" + deleteUser.Id + "'", connection);
+
+            connection.Open();
+            int i = cmd.ExecuteNonQuery();
+            connection.Close();
+
+            if (i > 0)
+            {
+                response.StatusCode = 200;
+                response.StatusMessage = "User Deleted!";
+            }
+            else
+            {
+                response.StatusCode = 100;
+                response.StatusMessage = "User Deletion Failed!";
             }
             return response;
         }
@@ -410,6 +455,51 @@ namespace OnlineAppointment.Model
             {
                 response.StatusCode = 100;
                 response.StatusMessage = "Consultant Data Not Found!";
+                response.listCRegistration = null;
+            }
+            return response;
+        }
+
+        public Response UserList(SqlConnection connection)
+        {
+            Response response = new Response();
+            SqlDataAdapter adapter = new SqlDataAdapter("SELECT ID,Name,Email,Password,Country,JobType,Contact FROM Users", connection);
+
+            DataTable dt = new DataTable();
+            adapter.Fill(dt);
+            List<User> listUser = new List<User>();
+
+            if (dt.Rows.Count > 0)
+            {
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    User userList = new User();
+                    userList.Id = Convert.ToInt32(dt.Rows[i]["Id"]);
+                    userList.Name = Convert.ToString(dt.Rows[i]["Name"]);
+                    userList.Email = Convert.ToString(dt.Rows[i]["Email"]);
+                    userList.Password = Convert.ToString(dt.Rows[i]["Password"]);
+                    userList.Country = Convert.ToString(dt.Rows[i]["Country"]);
+                    userList.Contact = Convert.ToString(dt.Rows[i]["Contact"]);
+                    userList.JobType = Convert.ToString(dt.Rows[i]["JobType"]);
+                    listUser.Add(userList);
+                }
+                if (listUser.Count > 0)
+                {
+                    response.StatusCode = 200;
+                    response.StatusMessage = "User Data Found.";
+                    response.listURegistration = listUser;
+                }
+                else
+                {
+                    response.StatusCode = 100;
+                    response.StatusMessage = "User Data Not Found!";
+                    response.listCRegistration = null;
+                }
+            }
+            else
+            {
+                response.StatusCode = 100;
+                response.StatusMessage = "User Data Not Found!";
                 response.listCRegistration = null;
             }
             return response;
