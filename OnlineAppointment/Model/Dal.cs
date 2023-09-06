@@ -329,28 +329,6 @@ namespace OnlineAppointment.Model
             return response;
         }
 
-        public Response AppointmentApproval(Appointment appointmentApprove, SqlConnection connection)
-        {
-            Response response = new Response();
-            SqlCommand cmd = new SqlCommand("UPDATE Appointment SET IsApproved = 1 WHERE AppNo = '" + appointmentApprove.AppNo + "'",connection);
-
-            connection.Open();
-            int i = cmd.ExecuteNonQuery();
-            connection.Close();
-
-            if(i > 0)
-            {
-                response.StatusCode=200;
-                response.StatusMessage = "Appointment Approved!";
-            }
-            else
-            {
-                response.StatusCode = 100;
-                response.StatusMessage = "Appointment Approval Failed!";
-            }
-            return response;
-        }
-
         public Response AppointmentList(Appointment appointmentLst, SqlConnection connection)
         {
             Response response = new Response();
@@ -434,7 +412,7 @@ namespace OnlineAppointment.Model
         {
             Response response = new Response();
             SqlCommand cmd = new SqlCommand("UPDATE Appointment SET UName = '" + updateAppointment.UName + "',UEmail = '" + updateAppointment.UEmail + "',CName = '" + updateAppointment.CName + "',CEmail = '" + updateAppointment.CEmail + "'," +
-                "Country = '"+updateAppointment.Country+"',Date = '"+updateAppointment.Date+"',Time = '"+updateAppointment.Time+"' WHERE AppNo = '"+updateAppointment.AppNo+"'", connection);
+                "Country = '"+updateAppointment.Country+"',Date = '"+updateAppointment.Date+"',Time = '"+updateAppointment.Time+ "',IsApproved = '"+updateAppointment.IsApproved+"' WHERE AppNo = '" + updateAppointment.AppNo+"'", connection);
             
             connection.Open();  
             int i = cmd.ExecuteNonQuery();
