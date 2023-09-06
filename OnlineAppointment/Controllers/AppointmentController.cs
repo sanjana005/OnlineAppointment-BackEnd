@@ -28,18 +28,6 @@ namespace OnlineAppointment.Controllers
             return response;
         }
 
-        [HttpPut]
-        [Route("AppointmentApproval")]
-
-        public Response AppointmentApproval(Appointment appointmentApprove)
-        {
-            Response response = new Response();
-            SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("DBCon").ToString());
-            Dal dal = new Dal();
-            response = dal.AppointmentApproval(appointmentApprove, connection);
-            return response;
-        }
-
         [HttpPost]
         [Route("AppointmentList")]
 
